@@ -243,8 +243,6 @@ public class Cadastrar {
             else if (numAluno >= alunos.size()) break; 
 
             alunoEscolhido = alunos.get(numAluno);
-
-            System.out.println(alunoEscolhido.getEstagio() != null);
             
             if(alunoEscolhido.getEmpresaAluno() == null || alunoEscolhido.getOrientadorAluno() == null) {
                 System.out.println("Aluno não tem empresa ou orientador");

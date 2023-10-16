@@ -72,6 +72,10 @@ public class Remover {
                         if (aluno.getEstagio() == null) {
                             manager.getTransaction().begin();
                             manager.remove(aluno);
+                            aluno.getOrientadorAluno().getAlunos().remove(aluno);
+                            aluno.getEmpresaAluno().getAlunos().remove(aluno);
+                            manager.merge(aluno.getOrientadorAluno());
+                            manager.merge(aluno.getEmpresaAluno());
                             manager.getTransaction().commit();
                             System.out.println("Aluno deletado!");
                         } else {
@@ -86,6 +90,7 @@ public class Remover {
         }
 
     } 
+
     public void removerOrientador(EntityManager manager){
 
         Map<String, Object> resultOrientador = buscar.buscarOrientador(manager);
@@ -108,14 +113,13 @@ public class Remover {
                     System.out.println("Remover orientador? \n1 - SIM\n2 - NÃO\nDigite: ");
                     int remover = scanner.nextInt();
                     if (remover == 1) {
-                        if (orientador.getAlunos() == null) {
+                        if (orientador.getAlunos().size() == 0 && orientador.getEstagio().size() == 0) {
                             manager.getTransaction().begin();
                             manager.remove(orientador);
                             manager.getTransaction().commit();
                             System.out.println("Orientador deletado!");
                         } else {
-                            System.out
-                                    .println("Orientador possui aluno e não pode ser deletado, delete o aluno primeiro");
+                            System.out.println("Orientador possui alunos ou estágios e não pode ser deletado, delete os alunos e estágios primeiro");
                         }
                     }
                 } else System.out.println("Número inválido, tente novamente.");
@@ -149,15 +153,13 @@ public class Remover {
                     System.out.println("Remover empresa? \n1 - SIM\n2 - NÃO\nDigite: ");
                     int remover = scanner.nextInt();
                     if (remover == 1) {
-                        if (empresa.getAlunos() == null) {
+                        if (empresa.getAlunos().size() == 0 && empresa.getEstagio().size() == 0) {
                             manager.getTransaction().begin();
                             manager.remove(empresa);
                             manager.getTransaction().commit();
                             System.out.println("Empresa deletada!");
                         } else {
-                            System.out
-                                    .println(
-                                            "Empresa possui aluno e não pode ser deletado, delete o aluno primeiro");
+                            System.out.println("Empresa possui alunos ou estágios e não pode ser deletado, delete os alunos e estágios primeiro");
                         }
                     }
                 } else System.out.println("Número inválido, tente novamente.");
@@ -192,6 +194,8 @@ public class Remover {
                     int remover = scanner.nextInt();
                     if (remover == 1) {
                         manager.getTransaction().begin();
+                        estagio.getAlunoEstagio().setEstagio(null);
+                        manager.merge(estagio.getAlunoEstagio());
                         manager.remove(estagio);
                         manager.getTransaction().commit();
                         System.out.println("Estágio deletado!");

@@ -83,6 +83,7 @@ public class Atualizar {
         } while (numAluno < 0 || numAluno > alunos.size());
         
         scanner.nextLine();
+        System.out.println("Deixe o campo vazio se não quiser alterar");
         System.out.print("\nNome do aluno: ");
         nomeAluno = scanner.nextLine();
 
@@ -153,16 +154,17 @@ public class Atualizar {
         aluno.setCurso(curso == "" ? aluno.getCurso() : curso);
         aluno.setMatricula(matricula == "" ? aluno.getMatricula() : matricula);
 
-        Orientador orientadorAnterior = aluno.getOrientadorAluno();
-        Empresa empresaAnterior = aluno.getEmpresaAluno();
-
         if (setOrientador) {
-            orientadorAnterior.getAlunos().remove(aluno);
+            if (aluno.getOrientadorAluno() != null) {
+                aluno.getOrientadorAluno().getAlunos().remove(aluno);
+            }
             orientador.getAlunos().add(aluno);
             aluno.setOrientadorAluno(orientador);
         }
         if (setEmpresa) {
-            empresaAnterior.getAlunos().remove(aluno);
+            if (aluno.getEmpresaAluno() != null) {
+                aluno.getEmpresaAluno().getAlunos().remove(aluno);
+            }
             empresa.getAlunos().add(aluno);
             aluno.setEmpresaAluno(empresa);
         }
@@ -171,11 +173,11 @@ public class Atualizar {
         manager.merge(aluno);
 
         if (setOrientador) {
-            manager.merge(orientadorAnterior);
+            manager.merge(aluno.getOrientadorAluno());
             manager.merge(orientador);
         }
         if (setEmpresa) {
-            manager.merge(empresaAnterior);
+            manager.merge(aluno.getEmpresaAluno());
             manager.merge(empresa);
         }
 
@@ -223,6 +225,8 @@ public class Atualizar {
         
         System.out.println("\n---------------------\n| ATUALIZAR ORIENTADOR |\n---------------------");
         
+        System.out.println("Deixe o campo vazio se não quiser alterar");
+        scanner.nextLine();
         System.out.print("\nNome do orientador: ");
         nomeOrientador = scanner.nextLine();
 
@@ -269,6 +273,7 @@ public class Atualizar {
         System.out.println("\n---------------------\n| ATUALIZAR EMPRESA |\n---------------------");
 
         scanner.nextLine();
+        System.out.println("Deixe o campo vazio se não quiser alterar");
         System.out.print("\nNome da empresa: ");
         nomeEmpresa = scanner.nextLine();
 
@@ -314,21 +319,14 @@ public class Atualizar {
         int status;
 
         Aluno aluno = new Aluno();
-        Orientador orientador = new Orientador();
-        Empresa empresa = new Empresa();
 
         Query queryAluno = manager.createQuery("FROM Aluno");
         List<Aluno> alunos = queryAluno.getResultList();
-
-        Query queryOrientador = manager.createQuery("FROM Orientador");
-        List<Orientador> orientadores = queryOrientador.getResultList();
-
-        Query queryEmpresa = manager.createQuery("FROM Empresa");
-        List<Empresa> empresas = queryEmpresa.getResultList();
         
         System.out.println("\n---------------------\n| ATUALIZAR ESTÁGIO |\n---------------------");
         
         scanner.nextLine();
+        System.out.println("Deixe o campo vazio se não quiser alterar");
         System.out.print("\nData de Incio: ");
         dataInicio = scanner.nextLine();
 
@@ -384,67 +382,6 @@ public class Atualizar {
 
         if (numAluno < 0) return "\nCancelado pelo usuário";
 
-        // int escolhaOrientador;
-
-        // boolean escolherOrientador = false;
-
-        // do {
-        //     System.out.println("\nDeseja escolher um Orientador? ");
-        //     System.out.println("1 - SIM");
-        //     System.out.println("2 - NÃO");
-        //     System.out.println("Escolha o número: ");
-        //     escolhaOrientador = scanner.nextInt();
-
-        //     if(escolhaOrientador == 1) escolherOrientador = true;
-
-        // } while (escolhaOrientador < 1 || escolhaOrientador > 2);
-
-        // int numOrientador;
-    
-        // if (escolherOrientador) {
-        //     listar.listarOrientadores(manager);
-
-        //     do {
-        //         System.out.println("\nEscolha o número do orientador: ");
-        //         numOrientador = scanner.nextInt();
-
-        //         if(numOrientador >= 0 && numOrientador <= orientadores.size()) {
-        //             orientador = orientadores.get(numOrientador);
-        //         } else System.out.println("Número inválido, tente novamente.");
-
-        //     } while (numOrientador < 0 || numOrientador > orientadores.size());
-        // }
-        
-        // int escolhaEmpresa;
-
-        // boolean escolherEmpresa = false;
-
-        // do {
-        //     System.out.println("\nDeseja escolher uma Empresa? ");
-        //     System.out.println("1 - SIM");
-        //     System.out.println("2 - NÃO");
-        //     System.out.println("Escolha o número: ");
-        //     escolhaEmpresa = scanner.nextInt();
-
-        //     if(escolhaEmpresa == 1) escolherEmpresa = true;
-
-        // } while (escolhaEmpresa < 1 || escolhaEmpresa > 2);
-
-        // int numEmpresa;
-    
-        // if (escolherEmpresa) {
-        //     listar.listarEmpresas(manager);
-
-        //     do {
-        //         System.out.println("\nEscolha o número da Empresa: ");
-        //         numEmpresa = scanner.nextInt();
-
-        //         if(numEmpresa >= 0 && numEmpresa <= empresas.size()) {
-        //             empresa = empresas.get(numEmpresa);
-        //         } else System.out.println("Número inválido, tente novamente.");
-
-        //     } while (numEmpresa < 0 || numEmpresa > empresas.size());
-        // }
         estagio.setDataInicio(dataInicio == "" ? estagio.getDataInicio() : dataInicio);
         estagio.setDataFim(dataFim == "" ? estagio.getDataFim() : dataFim);
         estagio.setCargaHoraria(cargaHoraria == "" ? estagio.getCargaHoraria() : cargaHoraria);

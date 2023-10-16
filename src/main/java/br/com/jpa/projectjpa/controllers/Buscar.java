@@ -232,25 +232,25 @@ public class Buscar {
 
             switch(num){
                 case 1:
-                    parametro = "datainicio";
+                    parametro = "dataInicio";
                     break;
                 case 2:
-                    parametro = "datafim";
+                    parametro = "dataFim";
                     break;
                 case 3:
-                    parametro = "cargahoraria";
+                    parametro = "cargaHoraria";
                     break;
                 case 4:
                     parametro = "status";
                     break;
                 case 5:
-                    parametro = "alunoestagio";
+                    parametro = "alunoEstagio";
                     break;
                 case 6:
-                    parametro = "orientadorestagio";
+                    parametro = "orientadorEstagio";
                     break;
                 case 7:
-                    parametro = "empresaestagio";
+                    parametro = "empresaEstagio";
                     break;
                 default:
                     System.out.println("Número inválido, tente novamente.");
@@ -279,7 +279,7 @@ public class Buscar {
                     String parametroPesquisaAluno = (String) resultAluno.get("parametro");
                     String valorPesquisaAluno = (String) resultAluno.get("valor");
                     valorRetorno = valorPesquisaAluno;
-                    queryEstagio = manager.createQuery("SELECT e FROM Estagio e JOIN FETCH e.alunoEstagio" + " p WHERE LOWER(p." + parametroPesquisaAluno + ") LIKE :valor");
+                    queryEstagio = manager.createQuery("SELECT e FROM Estagio e JOIN FETCH e." + parametro + " p WHERE LOWER(p." + parametroPesquisaAluno + ") LIKE :valor");
                     queryEstagio.setParameter("valor", "%" + valorPesquisaAluno.toLowerCase() + "%");
                     List<Estagio> estagiosAluno = queryEstagio.getResultList();
                     exibirEstagios(estagiosAluno);
@@ -291,7 +291,7 @@ public class Buscar {
                     String parametroPesquisaOrientador = (String) resultOrientador.get("parametro");
                     String valorPesquisaOrientador = (String) resultOrientador.get("valor");
                     valorRetorno = valorPesquisaOrientador;
-                    queryEstagio = manager.createQuery("SELECT e FROM Estagio e JOIN FETCH e.orientadorEstagio" + " p WHERE LOWER(p." + parametroPesquisaOrientador + ") LIKE :valor");
+                    queryEstagio = manager.createQuery("SELECT e FROM Estagio e JOIN FETCH e." + parametro + " p WHERE LOWER(p." + parametroPesquisaOrientador + ") LIKE :valor");
                     queryEstagio.setParameter("valor", "%" + valorPesquisaOrientador.toLowerCase() + "%");
                     List<Estagio> estagiosOrientador = queryEstagio.getResultList();
                     exibirEstagios(estagiosOrientador);
@@ -303,7 +303,7 @@ public class Buscar {
                     String parametroPesquisaEmpresa = (String) resultEmpresa.get("parametro");
                     String valorPesquisaEmpresa = (String) resultEmpresa.get("valor");
                     valorRetorno = valorPesquisaEmpresa;
-                    queryEstagio = manager.createQuery("SELECT e FROM Estagio e JOIN FETCH e.empresaEstagio" + " p WHERE LOWER(p." + parametroPesquisaEmpresa + ") LIKE :valor");
+                    queryEstagio = manager.createQuery("SELECT e FROM Estagio e JOIN FETCH e." + parametro + " p WHERE LOWER(p." + parametroPesquisaEmpresa + ") LIKE :valor");
                     queryEstagio.setParameter("valor", "%" + valorPesquisaEmpresa.toLowerCase() + "%");
                     List<Estagio> estagiosEmpresa = queryEstagio.getResultList();
                     exibirEstagios(estagiosEmpresa);
